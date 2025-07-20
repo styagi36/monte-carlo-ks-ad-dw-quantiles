@@ -4,7 +4,7 @@ from .config import SAMPLE_SIZES, NULL_DISTRIBUTIONS, N_SIMULATIONS, QUANTILES
 from .stats.ks import ks_statistic
 from .stats.ad import ad_statistic
 from .stats.dw import dw_statistic
-from scipy.stats import norm, uniform
+from scipy.stats import norm, uniform, expon, laplace
 
 import datetime
 
@@ -22,12 +22,20 @@ def log_with_timestamp(msg):
 # Map distribution names to sampling and CDF functions
 DISTRIBUTIONS = {
     'normal': {
-        'rvs': lambda n: np.random.normal(loc=0, scale=1, size=n),
+        'rvs': lambda n: norm.rvs(size=n),
         'cdf': norm.cdf
     },
     'uniform': {
-        'rvs': lambda n: np.random.uniform(low=0, high=1, size=n),
+        'rvs': lambda n: uniform.rvs(size=n),
         'cdf': uniform.cdf
+    },
+    'exponential': {
+        'rvs': lambda n: expon.rvs(size=n),
+        'cdf': expon.cdf
+    },
+    'laplace': {
+        'rvs': lambda n: laplace.rvs(size=n),
+        'cdf': laplace.cdf
     }
 }
 
@@ -163,6 +171,6 @@ def run_dw_simulation():
 if __name__ == "__main__":
     # Uncomment the simulation you want to run
     run_ks_simulation()
-    #run_ad_simulation()
-    #run_dw_simulation()
+    run_ad_simulation()
+    run_dw_simulation()
     
